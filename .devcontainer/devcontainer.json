@@ -1,10 +1,15 @@
+// A simple Dev Container that works with Podman on WSL.
 {
-	"name": "devcontainer-podman",
-	"image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-21.04",
-	"runArgs": [ "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--userns=keep-id"],
-	"extensions": [ "ms-vscode.cpptools" ],
-	"postCreateCommand": "sudo /bin/bash -c 'apt update && apt upgrade -y && apt install -y gcc gdb lcov libcpputest-dev scons && rm -rf /var/lib/apt/lists/*'",
-	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
-	"containerUser": "vscode"
+    "name": "devcontainer-podman",
+    "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu-21.04",
+    "runArgs": [
+        "--init", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", // Example configuration to allow use of GDB.
+        "--userns=keep-id", // Required for Podman.
+    ],
+    "extensions": [ "ms-vscode.cpptools" ],
+    // Example of installing some packages in the container.
+    "postCreateCommand": "sudo /bin/bash -c 'apt update && apt upgrade -y && apt install -y gcc gdb lcov libcpputest-dev scons && rm -rf /var/lib/apt/lists/*'",
+    "remoteUser": "vscode",
+    // See https://github.com/microsoft/vscode-remote-release/issues/4443 for using Dev Containers with Podman.
+    "containerUser": "vscode"
 }
