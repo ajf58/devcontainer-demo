@@ -77,33 +77,18 @@ DISTRIB_CODENAME=hirsute
 DISTRIB_DESCRIPTION="Ubuntu 21.04"
 ```
 
-## TODO rearrange content for working with Windows filesystem.
+### Using workspaces in the Windows filesystem
 
-### Configure VS Code to work with WSL
-
-
-Depending on whether VS Code is open in workspace on Windows or within a folder in WSL the command may execute in a different context. As of VS Code 1.61 users can enable the new [execute in WSL setting](https://github.com/microsoft/vscode-docs/blob/main/remote-release-notes/v1_61.md#execute-in-wsl-setting). Both of these settings are user-specific and need to be changed to work with this setup. Either adjust these through the UI (e.g. using `Ctrl+,` to bring up the settings view), or by adding the JSON fields below to the user's config file.
+If the workspace is in the Windows filesystem rather than in the WSL filesystem (e.g. in `C:\Users\Andrew` and not under `\\wsl$\Ubuntu-20.04\home\andrew`), then some additional configuration is required. As of VS Code 1.61 users can enable the new [execute in WSL setting](https://github.com/microsoft/vscode-docs/blob/main/remote-release-notes/v1_61.md#execute-in-wsl-setting). Use `Ctrl+,` to bring up the settings view), or by edit your user's config file directly to use the new `remote.containers.executeInWSL` option.
 ```json
 {
-    "remote.containers.dockerPath": "/usr/bin/podman",
     "remote.containers.executeInWSL": true
 }
 ```
+This setting (in combination with the `remote.containers.dockerPath` setting configured previously) ensures that Podman is executed in the WSL context even when the workspace is in Windows.
 
-Checkout this code to your Windows machine. It's recommend that you checkout the code into the WSL2 filesystem and open the folder in VS Code.
-
-
-VS Code is now ready to use with Dev Containers.
-
-## Using the Dev Container 
-
-For best filesystem performance it's recommended that you change into the WSL filesystem. Clone this repo.
-```sh
-andrew@win10-laptop:/mnt/c/Users/Andrew$ cd ~/
-andrew@win10-laptop:~$ git clone https://github.com/ajf58/devcontainer-demo.git
+```powershell
+PS C:\Users\Andrew> git clone https://github.com/ajf58/devcontainer-demo.git
+PS C:\Users\Andrew> code .\devcontainer-demo
 ```
-Open the folder in VS Code:
-```
-andrew@win10-laptop:~$ code ./devcontainer-demo
-```
-
+As before the workspace can be reopened in the Dev Container.
